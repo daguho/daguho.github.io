@@ -923,11 +923,15 @@ async function refresh(clearMessage = true) {
   render();
 }
 
-function logout() {
+async function logout() {
   localStorage.removeItem("td_user");
   state.user = null;
-  state.data = null;
   state.message = "";
+  try {
+    await loadState();
+  } catch {
+    state.data = { users: [], tasks: [], submissions: [], settings: { pointLevels: [] } };
+  }
   render();
 }
 
